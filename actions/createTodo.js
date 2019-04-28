@@ -8,17 +8,29 @@ module.exports = {
   noun: 'Todo',
   display: {
     label: 'Create Uncompleted Todo',
-    description: `Creates a new todo that isn't completed.`
+    description: `Creates a new todo that isn't completed.`,
   },
 
   // `operation` is where the business logic goes.
   operation: {
     inputFields: [
-      {key: 'body', required: true, type: 'string', helpText: 'Body of the todo.'},
-      {key: 'project', required: true, type: 'text', helpText: 'Name of the project this todo belongs to.'},
+      {
+        key: 'body',
+        required: true,
+        type: 'string',
+        helpText: 'Body of the todo.',
+      },
+      {
+        key: 'project',
+        required: true,
+        type: 'text',
+        helpText: 'Name of the project this todo belongs to.',
+      },
     ],
     perform: (z, bundle) => {
-      const body = `${bundle.inputData.body}${ bundle.inputData.project ? ` #${bundle.inputData.project}` : '' }`;
+      const body = `${bundle.inputData.body}${
+        bundle.inputData.project ? ` #${bundle.inputData.project}` : ''
+      }`;
       const query = `
         mutation createTodo($body: String!, $completed_at: DateTime, $attachments: [AttachmentInput]) {
           createTodo(input: { body: $body, completed_at: $completed_at, attachments: $attachments }) {
@@ -31,18 +43,20 @@ module.exports = {
 
       const variables = {
         body,
-        completed_at: null
+        completed_at: null,
       };
 
       const options = {
         method: 'POST',
         body: {
           query,
-          variables
-        }
+          variables,
+        },
       };
       const promise = z.request(`${process.env.BASE_URL}/graphql`, options);
-      return promise.then((response) => z.JSON.parse(response.content).data.createTodo);
+      return promise.then(
+        response => z.JSON.parse(response.content).data.createTodo,
+      );
     },
 
     // In cases where Zapier needs to show an example record to the user, but we are unable to get a live example
@@ -51,12 +65,9 @@ module.exports = {
     sample: {
       id: 107770,
       body: 'ship latest versio #awesomeproject',
-      completed_at: null
+      completed_at: null,
     },
 
-    outputFields: [
-      {key: 'id', label: 'ID'},
-      {key: 'body', label: 'Body'}
-    ]
-  }
+    outputFields: [{ key: 'id', label: 'ID' }, { key: 'body', label: 'Body' }],
+  },
 };

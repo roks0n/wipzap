@@ -14,7 +14,8 @@ function findTodo(z, filter) {
   const options = { method: 'POST', body: { query, variables } };
 
   return new Promise((resolve, reject) => {
-    return z.request(`${process.env.BASE_URL}/graphql`, options)
+    return z
+      .request(`${process.env.BASE_URL}/graphql`, options)
       .then(response => {
         const todos = z.JSON.parse(response.content).data.viewer.todos;
         if (todos.length === 1) {
@@ -42,11 +43,12 @@ function completeTodo(z, id) {
 
   return new Promise((resolve, reject) => {
     if (id === null) {
-      resolve({id: null, completed_at: null});
+      resolve({ id: null, completed_at: null });
     }
 
-    return z.request(`${process.env.BASE_URL}/graphql`, options)
-      .then((response) => {
+    return z
+      .request(`${process.env.BASE_URL}/graphql`, options)
+      .then(response => {
         resolve(z.JSON.parse(response.content).data.completeTodo);
       })
       .catch(err => reject(err));
@@ -63,14 +65,24 @@ module.exports = {
   noun: 'Todo',
   display: {
     label: 'Find and Complete Todo',
-    description: 'Find an existing todo and mark it as complete.'
+    description: 'Find an existing todo and mark it as complete.',
   },
 
   // `operation` is where the business logic goes.
   operation: {
     inputFields: [
-      {key: 'body', required: true, type: 'string', helpText: 'Body of the todo.'},
-      {key: 'project', required: true, type: 'text', helpText: 'Name of the project this todo belongs to.'},
+      {
+        key: 'body',
+        required: true,
+        type: 'string',
+        helpText: 'Body of the todo.',
+      },
+      {
+        key: 'project',
+        required: true,
+        type: 'text',
+        helpText: 'Name of the project this todo belongs to.',
+      },
     ],
     perform: (z, bundle) => {
       const filter = `${bundle.inputData.body} ${bundle.inputData.project}`;
@@ -82,12 +94,12 @@ module.exports = {
     // returned records, and have obviously dummy values that we can show to any user.
     sample: {
       id: 107770,
-      completed_at: '2019-03-17T10:10:51Z'
+      completed_at: '2019-03-17T10:10:51Z',
     },
 
     outputFields: [
-      {key: 'id', label: 'ID'},
-      {key: 'completed_at', label: 'Completed At'},
-    ]
-  }
+      { key: 'id', label: 'ID' },
+      { key: 'completed_at', label: 'Completed At' },
+    ],
+  },
 };

@@ -7,17 +7,17 @@ const getAccessToken = (z, bundle) => {
     client_secret: process.env.CLIENT_SECRET,
     grant_type: 'authorization_code',
     redirect_uri: '{{bundle.inputData.redirect_uri}}',
-  }
+  };
   const promise = z.request(`${process.env.BASE_URL}/oauth/token`, {
     method: 'POST',
     body: data,
     headers: {
-      'content-type': 'application/x-www-form-urlencoded'
-    }
+      'content-type': 'application/x-www-form-urlencoded',
+    },
   });
 
   // Needs to return at minimum, `access_token`, and if your app also does refresh, then `refresh_token` too
-  return promise.then((response) => {
+  return promise.then(response => {
     if (response.status !== 200) {
       throw new Error('Unable to fetch access token: ' + response.content);
     }
@@ -47,7 +47,7 @@ const testAuth = (z /*, bundle*/) => {
 
   // This method can return any truthy value to indicate the credentials are valid.
   // Raise an error to show
-  return promise.then((response) => {
+  return promise.then(response => {
     if (response.status === 401) {
       throw new Error('The access token you supplied is not valid');
     }
@@ -67,8 +67,8 @@ module.exports = {
         client_id: '{{process.env.CLIENT_ID}}',
         state: '{{bundle.inputData.state}}',
         redirect_uri: '{{bundle.inputData.redirect_uri}}',
-        response_type: 'code'
-      }
+        response_type: 'code',
+      },
     },
     // Step 2 of the OAuth flow; Exchange a code for an access token.
     // This could also use the request shorthand.
@@ -77,7 +77,7 @@ module.exports = {
     // this method to tell Zapier how to refresh it.
     refreshAccessToken: undefined,
     // If you want Zapier to automatically invoke `refreshAccessToken` on a 401 response, set to true
-    autoRefresh: false
+    autoRefresh: false,
     // If there is a specific scope you want to limit your Zapier app to, you can define it here.
     // Will get passed along to the authorizeUrl
     // scope: 'read,write'
@@ -86,5 +86,5 @@ module.exports = {
   // method after the OAuth flow is complete to ensure everything is setup properly.
   test: testAuth,
   // assuming "username" is a key returned from the test
-  connectionLabel: '{{username}}'
+  connectionLabel: '{{username}}',
 };

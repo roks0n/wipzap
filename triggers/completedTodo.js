@@ -18,13 +18,13 @@ const completeTodo = (z, bundle) => {
   `;
   const options = {
     method: 'POST',
-    body: { query: query }
+    body: { query: query },
   };
 
   const promise = z.request(`${process.env.BASE_URL}/graphql`, options);
   return promise
-    .then((response) => z.JSON.parse(response.content).data.viewer.todos)
-    .catch((err) => z.console.error('err', err));
+    .then(response => z.JSON.parse(response.content).data.viewer.todos)
+    .catch(err => z.console.error('err', err));
 };
 
 module.exports = {
@@ -32,7 +32,7 @@ module.exports = {
   noun: 'Completed Todo',
   display: {
     label: 'Todo Completed',
-    description: 'Trigger when a todo is completed.'
+    description: 'Trigger when a todo is completed.',
   },
   operation: {
     inputFields: [
@@ -40,8 +40,8 @@ module.exports = {
         key: 'product',
         type: 'string',
         dynamic: 'products.id.hashtag',
-        helpText: 'Your product name (hashtag) on WIP'
-      }
+        helpText: 'Your product name (hashtag) on WIP',
+      },
     ],
     perform: completeTodo,
     sample: {
@@ -52,8 +52,8 @@ module.exports = {
         id: 100,
         hashtag: 'awesomeproject',
         name: 'Awesome Project',
-        url: 'https://wip.chat/products/1337'
-      }
-    }
-  }
+        url: 'https://wip.chat/products/1337',
+      },
+    },
+  },
 };

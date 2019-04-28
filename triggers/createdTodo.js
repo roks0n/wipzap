@@ -19,13 +19,13 @@ const createTodo = (z, bundle) => {
   const variables = { filter: bundle.inputData.project };
   const options = {
     method: 'POST',
-    body: { query, variables }
+    body: { query, variables },
   };
 
   const promise = z.request(`${process.env.BASE_URL}/graphql`, options);
   return promise
-    .then((response) => z.JSON.parse(response.content).data.viewer.todos)
-    .catch((err) => z.console.error('err', err));
+    .then(response => z.JSON.parse(response.content).data.viewer.todos)
+    .catch(err => z.console.error('err', err));
 };
 
 module.exports = {
@@ -33,7 +33,7 @@ module.exports = {
   noun: 'Created Todo',
   display: {
     label: 'Todo Created',
-    description: 'Trigger when a new todo is created.'
+    description: 'Trigger when a new todo is created.',
   },
   operation: {
     inputFields: [
@@ -41,8 +41,8 @@ module.exports = {
         key: 'product',
         type: 'string',
         dynamic: 'products.id.hashtag',
-        helpText: 'Your product name (hashtag) on WIP'
-      }
+        helpText: 'Your product name (hashtag) on WIP',
+      },
     ],
     perform: createTodo,
     sample: {
@@ -53,8 +53,8 @@ module.exports = {
         id: 100,
         hashtag: 'awesomeproject',
         name: 'Awesome Project',
-        url: 'https://wip.chat/products/1337'
-      }
-    }
-  }
+        url: 'https://wip.chat/products/1337',
+      },
+    },
+  },
 };
